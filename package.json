@@ -1,0 +1,30 @@
+{
+  "name": "react_with_rails_and_gulp",
+  "version": "1.0.0",
+  "description": "== README",
+  "main": "index.js",
+  "author": "yachibit",
+  "license": "ISC",
+  "scripts": {
+    "build": "gulp",
+    "test": "mocha --opts test/javascripts/mocha.opts test/javascripts/*.js",
+    "watch": "gulp watch"
+  },
+  "dependencies": {
+    "babel": "^5.2.17",
+    "babelify": "^6.1.1",
+    "browserify": "^10.1.0",
+    "coffee-script": "^1.9.2",
+    "glob": "^5.0.6",
+    "gulp-babel": "^5.1.0",
+    "react": "^0.13.3",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "devDependencies": {
+    "espower-babel": "^3.1.1",
+    "gulp": "^3.8.11",
+    "jsdom": "^3.1.2",
+    "mocha": "^2.2.5",
+    "power-assert": "^0.11.0"
+  }
+}
