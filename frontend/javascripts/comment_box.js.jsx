@@ -1,7 +1,7 @@
 var React = require('react')
 var marked = require('marked')
 
-import { Button } from 'react-bootstrap';
+import { Grid, Col, Row, Button } from 'react-bootstrap';
 
 window.CommentBox = React.createClass({
   loadCommentsFromServer: function() {
@@ -58,9 +58,11 @@ window.CommentList = React.createClass({
       );
     });
     return (
-      <div className="commentList">
-        {commentNodes}
-      </div>
+      <Grid className="commentList">
+        <Row>
+          {commentNodes}
+        </Row>
+      </Grid>
     );
   }
 });
@@ -104,12 +106,10 @@ window.Comment = React.createClass({
   render: function() {
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-      </div>
+      <Row>
+        <Col xs={3}>{this.props.author}</Col>
+        <Col xs={6} dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      </Row>
     );
   }
 });
