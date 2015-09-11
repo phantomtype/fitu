@@ -3,6 +3,16 @@ var marked = require('marked')
 
 import { Grid, Col, Row, Button } from 'react-bootstrap';
 
+window.CommentFinder = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <input type="text" onChange="" />
+      </div>
+    );
+  }
+});
+
 window.CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
