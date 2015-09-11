@@ -1,6 +1,8 @@
 var React = require('react')
 var marked = require('marked')
 
+import { Button } from 'react-bootstrap';
+
 window.CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
@@ -92,7 +94,7 @@ window.CommentForm = React.createClass({
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="Your name" value={this.state.author} onChange={this.handleAuthorChange} />
         <input type="text" placeholder="Say something..." value={this.state.text} onChange={this.handleTextChange} />
-        <input type="submit" value="Post" />
+        <Button type="submit" bsSize="large" bsStyle="success">Post</Button>
       </form>
     );
   }
