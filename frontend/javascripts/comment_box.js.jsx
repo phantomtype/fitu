@@ -59,9 +59,7 @@ window.CommentList = React.createClass({
     });
     return (
       <Grid className="commentList">
-        <Row>
-          {commentNodes}
-        </Row>
+        {commentNodes}
       </Grid>
     );
   }
@@ -96,7 +94,7 @@ window.CommentForm = React.createClass({
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="Your name" value={this.state.author} onChange={this.handleAuthorChange} />
         <input type="text" placeholder="Say something..." value={this.state.text} onChange={this.handleTextChange} />
-        <Button type="submit" bsSize="large" bsStyle="success">Post</Button>
+        <Button type="submit" bsStyle="success" block>Post</Button>
       </form>
     );
   }
