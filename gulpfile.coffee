@@ -12,7 +12,7 @@ gulp.task 'build', ->
   .transform 'babelify'
   .bundle()
   .pipe source 'bundle.js'
-  .pipe gulp.dest 'app/assets/javascripts/components'
+  .pipe gulp.dest 'public/'
 
 gulp.task 'watch', ->
   gulp.watch('./frontend/javascripts/**/*.{js,jsx,coffee}', ['build'])

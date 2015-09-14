@@ -3,17 +3,7 @@ var marked = require('marked')
 
 import { Grid, Col, Row, Button } from 'react-bootstrap';
 
-window.CommentFinder = React.createClass({
-  render: function() {
-    return (
-      <div>
-        <input type="text" onChange="" />
-      </div>
-    );
-  }
-});
-
-window.CommentBox = React.createClass({
+let CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
       url: this.props.url,
@@ -22,7 +12,7 @@ window.CommentBox = React.createClass({
         this.setState({data: result.data});
       }.bind(this),
       error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        //console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
   },
@@ -122,10 +112,7 @@ window.Comment = React.createClass({
   }
 });
 
-
-export default window.CommentBox
-export default window.Comment
-export default window.CommentList
-export default window.CommentForm
-
-
+React.render(
+  <CommentBox url='/api/v1/comments.json' />,
+  document.getElementById('app')
+)
