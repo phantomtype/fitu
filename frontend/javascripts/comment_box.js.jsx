@@ -48,7 +48,7 @@ let CommentBox = React.createClass({
   }
 });
 
-window.CommentList = React.createClass({
+let CommentList = React.createClass({
   render: function() {
     var commentNodes = this.props.data.map(function (comment) {
       return (
@@ -65,7 +65,7 @@ window.CommentList = React.createClass({
   }
 });
 
-window.CommentForm = React.createClass({
+let CommentForm = React.createClass({
   getInitialState: function () {
     return {
       author: "",
@@ -100,7 +100,7 @@ window.CommentForm = React.createClass({
   }
 });
 
-window.Comment = React.createClass({
+let Comment = React.createClass({
   render: function() {
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return (
