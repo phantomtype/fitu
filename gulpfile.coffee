@@ -18,3 +18,12 @@ gulp.task 'watch', ->
   gulp.watch('./frontend/javascripts/**/*.{js,jsx,coffee}', ['build'])
 
 gulp.task 'default', ['build']
+
+gulp.task 'dist', ->
+  files = glob.sync './frontend/javascripts/**/*.{js,jsx,coffee}'
+  browserify
+    entries: files,
+  .transform 'babelify'
+  .bundle()
+  .pipe source 'dist.js'
+  .pipe gulp.dest 'public/'
