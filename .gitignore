@@ -19,6 +19,6 @@
 node_modules/
 .idea/
 
-app/assets/javascripts/components/bundle.js
+public/bundle.js
 
 react-rails-tutorial.iml
