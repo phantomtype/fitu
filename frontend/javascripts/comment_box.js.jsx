@@ -1,12 +1,15 @@
-var React = require('react')
+import React from 'react/addons';
 var marked = require('marked')
+import { Router, Route, Link } from 'react-router';
 
 import { Grid, Col, Row, Button } from 'react-bootstrap';
+
+let url = '/api/v1/comments.json';
 
 let CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
-      url: this.props.url,
+      url: url,
       dataType: 'json',
       success: function(result) {
         this.setState({data: result.data});
@@ -19,7 +22,7 @@ let CommentBox = React.createClass({
   handleCommentSubmit: function(comment) {
     this.setState({data: this.state.data.concat([comment])});
     $.ajax({
-      url: this.props.url,
+      url: url,
       dataType: 'json',
       type: 'POST',
       data: comment,
@@ -112,7 +115,23 @@ let Comment = React.createClass({
   }
 });
 
-React.render(
-  <CommentBox url='/api/v1/comments.json' />,
-  document.getElementById('app')
-)
+var App = React.createClass({
+  render() {
+    return (
+      <div>
+        <ul>
+          <li><Link to={`/comments`}>comments</Link></li>
+        </ul>
+        {this.props.children}
+      </div>
+    );
+  }
+});
+
+React.render((
+  <Router>
+  <Route path="/" component={App}>
+    <Route path="comments" component={CommentBox} url={url} />
+  </Route>
+  </Router>
+), document.getElementById('app'));
