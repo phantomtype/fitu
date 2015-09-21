@@ -12,5 +12,11 @@
 
 <%= yield %>
 
+<% if Rails.env.production? %>
+    <script src="/dist.js"></script>
+<% else %>
+    <script src="/bundle.js"></script>
+<% end %>
+
 </body>
 </html>
