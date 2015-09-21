@@ -2,7 +2,7 @@ import React from 'react';
 var marked = require('marked')
 import { Router, Route, Link } from 'react-router';
 
-import { Grid, Col, Row, Button } from 'react-bootstrap';
+import { Grid, Col, Row, Button, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 let url = '/api/v1/comments.json';
 
@@ -235,6 +235,12 @@ let Customer = React.createClass({
       <Row>
         <Col xs={2}>{c.last_name} {c.first_name}</Col>
         <Col xs={2}>{c.last_name_kana} {c.first_name_kana}</Col>
+        <Col xs={2}>{c.gender}</Col>
+        <Col xs={2}>{c.address}</Col>
+        <Col xs={2}>{c.birth}</Col>
+        <Col xs={2}>{c.email}</Col>
+        <Col xs={2}>{c.tel}</Col>
+        <Col xs={2}>{c.note}</Col>
       </Row>
     );
   }
@@ -244,11 +250,16 @@ var App = React.createClass({
   render() {
     return (
       <div>
-        <ul>
-          <li><Link to={`/comments`}>comments</Link></li>
-          <li><Link to={`/customers`}>customers</Link></li>
-        </ul>
-        {this.props.children}
+        <Navbar brand="FitYou" inverse toggleNavKey={0}>
+          <Nav right eventkey={0}>
+            <NavItem eventKey={1} href="#"><Link to={`/comments`}>comments</Link></NavItem>
+            <NavItem eventKey={2} href="#"><Link to={`/customers`}>customers</Link></NavItem>
+          </Nav>
+        </Navbar>
+
+        <div class="container">
+          {this.props.children}
+        </div>
       </div>
     );
   }
