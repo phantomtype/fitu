@@ -2,8 +2,6 @@ import React from 'react';
 var marked = require('marked')
 import { Router, Route, Link } from 'react-router';
 
-import { Grid, Col, Row, Button, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
-
 let url = '/api/v1/comments.json';
 
 let CommentBox = React.createClass({
@@ -61,9 +59,9 @@ let CommentList = React.createClass({
       );
     });
     return (
-      <Grid className="commentList">
+      <div className="commentList">
         {commentNodes}
-      </Grid>
+      </div>
     );
   }
 });
@@ -96,7 +94,7 @@ let CommentForm = React.createClass({
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="Your name" value={this.state.author} onChange={this.handleChange.bind(this, "author")} />
         <input type="text" placeholder="Say something..." value={this.state.text} onChange={this.handleChange.bind(this, "text")} />
-        <Button type="submit" bsStyle="success" block>Post</Button>
+        <button type="submit">Post</button>
       </form>
     );
   }
@@ -106,10 +104,10 @@ let Comment = React.createClass({
   render: function() {
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return (
-      <Row>
-        <Col xs={3}>{this.props.author}</Col>
-        <Col xs={6} dangerouslySetInnerHTML={{__html: rawMarkup}} />
-      </Row>
+      <div>
+        <span xs={3}>{this.props.author}</span>
+        <span xs={6} dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      </div>
     );
   }
 });
@@ -153,7 +151,7 @@ let CustomerBox = React.createClass({
     //<CommentForm onCustomerSubmit={this.handleCustomerSubmit} />
     return (
       <div className="customerBox">
-        <h1>Customers</h1>
+        <h3>Customers</h3>
         <CustomerList data={this.state.data} />
       </div>
     );
@@ -169,9 +167,17 @@ let CustomerList = React.createClass({
       );
     });
     return (
-      <Grid className="commentList">
-        {nodes}
-      </Grid>
+      <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+        <tr>
+          <th className="mdl-data-table__cell--non-numeric">氏名</th>
+          <th>かな</th>
+        </tr>
+        </thead>
+        <tbody>
+          {nodes}
+        </tbody>
+      </table>
     );
   }
 });
@@ -232,16 +238,10 @@ let Customer = React.createClass({
   render: function() {
     let c = this.props.customer;
     return (
-      <Row>
-        <Col xs={2}>{c.last_name} {c.first_name}</Col>
-        <Col xs={2}>{c.last_name_kana} {c.first_name_kana}</Col>
-        <Col xs={2}>{c.gender}</Col>
-        <Col xs={2}>{c.address}</Col>
-        <Col xs={2}>{c.birth}</Col>
-        <Col xs={2}>{c.email}</Col>
-        <Col xs={2}>{c.tel}</Col>
-        <Col xs={2}>{c.note}</Col>
-      </Row>
+      <tr>
+        <td>{c.last_name} {c.first_name}</td>
+        <td>{c.last_name_kana} {c.first_name_kana}</td>
+      </tr>
     );
   }
 });
@@ -249,17 +249,47 @@ let Customer = React.createClass({
 var App = React.createClass({
   render() {
     return (
-      <div>
-        <Navbar brand="FitYou" inverse toggleNavKey={0}>
-          <Nav right eventkey={0}>
-            <NavItem eventKey={1} href="#"><Link to={`/comments`}>comments</Link></NavItem>
-            <NavItem eventKey={2} href="#"><Link to={`/customers`}>customers</Link></NavItem>
-          </Nav>
-        </Navbar>
-
-        <div class="container">
+    <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+      <header className="demo-header mdl-layout__header mdl-color--white mdl-color--grey-100 mdl-color-text--grey-600">
+        <div className="mdl-layout__header-row">
+          <span className="mdl-layout-title">Home</span>
+          <div className="mdl-layout-spacer"></div>
+          <div className="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <label className="mdl-button mdl-js-button mdl-button--icon" for="search">
+              <i className="material-icons">search</i>
+            </label>
+            <div className="mdl-textfield__expandable-holder">
+              <input className="mdl-textfield__input" type="text" id="search" />
+              <label className="mdl-textfield__label" for="search">Enter your query...</label>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div className="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+        <header className="demo-drawer-header">
+          <div className="demo-avatar-dropdown">
+            <span>hello@example.com</span>
+            <div className="mdl-layout-spacer"></div>
+            <button id="accbtn" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i className="material-icons" role="presentation">arrow_drop_down</i>
+              <span className="visuallyhidden">Accounts</span>
+            </button>
+            <ul className="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+              <li className="mdl-menu__item">hello@example.com</li>
+              <li className="mdl-menu__item">info@example.com</li>
+            </ul>
+          </div>
+        </header>
+        <nav className="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+          <Link className="mdl-navigation__link" to={`/comments`}>comments</Link>
+          <Link className="mdl-navigation__link" to={`/customers`}>customers</Link>
+        </nav>
+      </div>
+      <main className="mdl-layout__content mdl-color--grey-100">
+        <div className="mdl-grid demo-content">
           {this.props.children}
         </div>
+      </main>
       </div>
     );
   }
