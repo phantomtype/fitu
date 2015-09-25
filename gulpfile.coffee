@@ -7,21 +7,47 @@ browserify = require 'browserify'
 source = require 'vinyl-source-stream'
 glob = require 'glob'
 rename = require 'gulp-rename'
+plumber = require 'gulp-plumber'
+notify = require 'gulp-notify'
+gutil = require 'gulp-util'
+watchify = require 'watchify'
 
-gulp.task 'build', ->
-  files = glob.sync './frontend/javascripts/**/*.{js,jsx,coffee}'
-  browserify
-    entries: files,
-    debug: true
-  .transform 'babelify'
-  .bundle()
-  .pipe source 'bundle.js'
-  .pipe gulp.dest 'public/'
+paths =
+  srcFiles: glob.sync('./frontend/javascripts/**/*.{js,jsx,coffee}')
+  build: './public/'
+  buildFile: 'bundle.js'
 
-gulp.task 'watch', ->
-  gulp.watch('./frontend/javascripts/**/*.{js,jsx,coffee}', ['build'])
+buildScript = (files, watch) ->
+  rebundle = ->
+    stream = bundler.bundle()
+    stream.on("error", notify.onError(
+      title: "Compile Error"
+      message: "<%= error.message %>"
+    ))
+    .pipe(source(paths.buildFile))
+    .pipe gulp.dest(paths.build)
+    .pipe(notify("success"))
 
-gulp.task 'default', ['build']
+  props = watchify.args
+  props.entries = files
+  props.debug = true
+
+  bundler = (if watch then watchify(browserify(props)) else browserify(props))
+  bundler.transform 'babelify'
+  bundler.on "update", ->
+    rebundle()
+    gutil.log "Rebundled..."
+    gutil.log paths.srcFiles
+    return
+
+  rebundle()
+
+
+gulp.task "default", ->
+  buildScript paths.srcFiles, false
+
+gulp.task "watch", ["default"], ->
+  buildScript paths.srcFiles, true
 
 gulp.task 'dist', ->
   files = glob.sync './frontend/javascripts/**/*.{js,jsx,coffee}'
