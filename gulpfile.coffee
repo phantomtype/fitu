@@ -1,4 +1,7 @@
 gulp = require 'gulp'
+bower = require 'main-bower-files'
+concat = require 'gulp-concat'
+filter = require 'gulp-filter'
 babel = require 'gulp-babel'
 browserify = require 'browserify'
 source = require 'vinyl-source-stream'
@@ -27,3 +30,11 @@ gulp.task 'dist', ->
   .bundle()
   .pipe source 'dist.js'
   .pipe gulp.dest 'public/'
+
+gulp.task 'BowerJS', ->
+  jsFilter = filter '**/*.js'
+  gulp
+    .src bower()
+    .pipe jsFilter
+    .pipe concat 'lib.js'
+    .pipe gulp.dest 'public'

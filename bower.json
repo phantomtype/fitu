@@ -1,0 +1,23 @@
+{
+  "name": "fityou",
+  "version": "0.0.0",
+  "homepage": "https://github.com/phantomtype/fityou",
+  "authors": [
+    "YusukeKokubo <yusuke.kokubo@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "material-design-lite": "~1.0.4",
+    "material-design-icons": "~2.0.0"
+  }
+}
