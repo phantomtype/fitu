@@ -17,20 +17,27 @@ paths =
   build: './public/'
   buildFile: 'bundle.js'
 
-buildScript = (files, watch) ->
+buildScript = (files, watch, dist) ->
+  buildFile =
+    if dist
+      "bundle.js"
+    else
+      "dist.js"
+
   rebundle = ->
     stream = bundler.bundle()
     stream.on("error", notify.onError(
       title: "Compile Error"
       message: "<%= error.message %>"
     ))
-    .pipe(source(paths.buildFile))
+    .pipe(source(buildFile))
     .pipe gulp.dest(paths.build)
     .pipe(notify("success"))
 
   props = watchify.args
   props.entries = files
-  props.debug = true
+  if !dist
+    props.debug = true
 
   bundler = (if watch then watchify(browserify(props)) else browserify(props))
   bundler.transform 'babelify'
@@ -44,19 +51,13 @@ buildScript = (files, watch) ->
 
 
 gulp.task "default", ->
-  buildScript paths.srcFiles, false
+  buildScript paths.srcFiles, false, false
 
 gulp.task "watch", ["default"], ->
-  buildScript paths.srcFiles, true
+  buildScript paths.srcFiles, true, false
 
 gulp.task 'dist', ->
-  files = glob.sync './frontend/javascripts/**/*.{js,jsx,coffee}'
-  browserify
-    entries: files,
-  .transform 'babelify'
-  .bundle()
-  .pipe source 'dist.js'
-  .pipe gulp.dest 'public/'
+  buildScript paths.srcFiles, false, true
 
 gulp.task 'bower', ->
   jsFilter = filter '**/*.js'
