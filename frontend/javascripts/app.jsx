@@ -1,8 +1,7 @@
 import React from 'react';
-//import {CommentBox} from './components/comment.jsx';
-import CustomerBox from './components/customer.jsx';
-
 import { Router, Route, Link } from 'react-router';
+
+import CustomerBox from './components/customer.jsx';
 
 class App extends React.Component {
   render() {
