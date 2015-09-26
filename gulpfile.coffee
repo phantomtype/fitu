@@ -18,11 +18,9 @@ paths =
   buildFile: 'bundle.js'
 
 buildScript = (files, watch, dist) ->
-  buildFile =
-    if dist
-      "bundle.js"
-    else
-      "dist.js"
+  buildFile = paths.buildFile
+  if dist
+    buildFile = "dist.js"
 
   rebundle = ->
     stream = bundler.bundle()
