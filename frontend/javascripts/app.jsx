@@ -25,12 +25,8 @@ class App extends React.Component {
             <a className="mdl-navigation__link" href="">Link</a>
           </nav>
         </div>
-        <main className="mdl-layout__content">
-          <div className="mdl-layout__tab-panel is-active">
-            <section className="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            {this.props.children}
-              </section>
-          </div>
+        <main className="mdl-layout__content content">
+          {this.props.children}
         </main>
       </div>
     )
