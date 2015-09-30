@@ -39,8 +39,8 @@ export default class CustomerBox extends React.Component {
     return (
       <div className="customerBox">
         <h3>顧客管理</h3>
-        <CustomerList data={this.state.data} />
         <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} />
+        <CustomerList data={this.state.data} />
       </div>
     );
   }
@@ -53,7 +53,7 @@ class CustomerForm extends React.Component {
   }
   handleChange(elm, e) {
     var newState = {};
-    newState[elm] = e.target.value;
+    newState[elm] = e;
     this.setState(newState);
   }
   handleSubmit(e) {
@@ -69,11 +69,33 @@ class CustomerForm extends React.Component {
   }
   render() {
     return (
-      <form className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
-        <input type="text" placeholder="Your name" value={this.state.author} onChange={this.handleChange.bind(this, "author")} />
-        <input type="text" placeholder="Say something..." value={this.state.text} onChange={this.handleChange.bind(this, "text")} />
-        <button type="submit">Post</button>
+      <form onSubmit={this.handleSubmit.bind(this)}>
+        <TextInput id="last_name" label="氏" handleChange={this.handleChange.bind(this)} />
+        <TextInput id="first_name" label="名" handleChange={this.handleChange.bind(this)} />
+        <TextInput id="last_name_kana" label="氏(かな)" handleChange={this.handleChange.bind(this)} />
+        <TextInput id="first_name_kana" label="名(かな)" handleChange={this.handleChange.bind(this)} />
+        <button className="mdl-button mdl-js-button mdl-button--raised">Post</button>
       </form>
+    );
+  }
+};
+
+class TextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ""};
+  }
+  handleChange(elm, e) {
+    this.setState({value: e.target.value});
+    this.props.handleChange(this.props.id, e.target.value);
+  }
+  render() {
+    return (
+      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input className="mdl-textfield__input" type="text" id={this.props.id}
+               value={this.state.value} onChange={this.handleChange.bind(this, "")} />
+        <label className="mdl-textfield__label" for={this.props.id}>{this.props.label}</label>
+      </div>
     );
   }
 };
