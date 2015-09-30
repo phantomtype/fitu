@@ -34,15 +34,46 @@ export default class CustomerBox extends React.Component {
   }
   componentDidMount() {
     this.loadCommentsFromServer();
-    //setInterval(this.loadCommentsFromServer, this.props.pollInterval);
   }
   render() {
-    //<CommentForm onCustomerSubmit={this.handleCustomerSubmit} />
     return (
       <div className="customerBox">
-        <h3>Customers</h3>
+        <h3>顧客管理</h3>
         <CustomerList data={this.state.data} />
+        <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} />
       </div>
+    );
+  }
+};
+
+class CustomerForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  handleChange(elm, e) {
+    var newState = {};
+    newState[elm] = e.target.value;
+    this.setState(newState);
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+    var author = this.state.author;
+    var text = this.state.text;
+    if (!text || !author) {
+      return;
+    }
+    this.props.onCustomerSubmit({author: author, text: text});
+    this.setState({author: "", text: ""});
+    return;
+  }
+  render() {
+    return (
+      <form className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
+        <input type="text" placeholder="Your name" value={this.state.author} onChange={this.handleChange.bind(this, "author")} />
+        <input type="text" placeholder="Say something..." value={this.state.text} onChange={this.handleChange.bind(this, "text")} />
+        <button type="submit">Post</button>
+      </form>
     );
   }
 };
@@ -59,8 +90,11 @@ class CustomerList extends React.Component {
       <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
         <thead>
         <tr>
-          <th className="mdl-data-table__cell--non-numeric">氏名</th>
+          <th>会員番号</th>
+          <th>氏名</th>
           <th>かな</th>
+          <th>性別</th>
+          <th>年齢</th>
         </tr>
         </thead>
         <tbody>
