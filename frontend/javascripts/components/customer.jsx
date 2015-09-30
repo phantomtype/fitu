@@ -87,7 +87,7 @@ class CustomerList extends React.Component {
       );
     });
     return (
-      <table className="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+      <table className="mdl-data-table">
         <thead>
         <tr>
           <th>会員番号</th>
