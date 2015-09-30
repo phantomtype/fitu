@@ -74,8 +74,35 @@ class CustomerForm extends React.Component {
         <TextInput id="first_name" label="名" handleChange={this.handleChange.bind(this)} />
         <TextInput id="last_name_kana" label="氏(かな)" handleChange={this.handleChange.bind(this)} />
         <TextInput id="first_name_kana" label="名(かな)" handleChange={this.handleChange.bind(this)} />
+        <RadioInput id="female" label="女性" handleChange={this.handleChange.bind(this)} />
+        <RadioInput id="man" label="男性" handleChange={this.handleChange.bind(this)} />
         <button className="mdl-button mdl-js-button mdl-button--raised">Post</button>
       </form>
+    );
+  }
+};
+
+class RadioInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {checked: true};
+  }
+  handleChange(elm, e) {
+    this.setState({value: e.target.checked});
+    this.props.handleChange(this.props.id, e.target.checked);
+  }
+  render() {
+    return (
+      <label for={this.props.id} className="mdl-radio mdl-js-radio">
+      <input
+        className="mdl-radio__button"
+      type="radio"
+      value={this.props.id}
+      id={this.props.id}
+      checked={this.state.checked}
+      onChange={this.handleChange.bind(this, "")} />
+        <span className="mdl-radio__label">{this.props.label}</span>
+        </label>
     );
   }
 };
