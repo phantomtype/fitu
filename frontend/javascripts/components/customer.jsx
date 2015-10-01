@@ -75,11 +75,38 @@ class CustomerForm extends React.Component {
         <TextInput id="last_name_kana" label="氏(かな)" handleChange={this.handleChange.bind(this)} />
         <TextInput id="first_name_kana" label="名(かな)" handleChange={this.handleChange.bind(this)} />
         <RadioGroup id="gender" labels={[{v: "female", l: "女性"}, {v: "man", l: "男性"}]} handleChange={this.handleChange.bind(this)} />
+        <DateInput id="birth" handleChange={this.handleChange.bind(this)} />
         <button className="mdl-button mdl-js-button mdl-button--raised">Post</button>
       </form>
     );
   }
 };
+
+class DateInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {year: "", month: "", day: ""};
+  }
+  handleChange(elm, e) {
+    var newState = {};
+    newState[elm] = e;
+    this.setState(newState);
+    if (this.state.year && this.state.month && this.state.day) {
+      let date = new Date(this.state.year, this.state.month - 1, this.state.day)
+      console.log(date)
+      this.props.handleChange(this.props.id, date)
+    }
+  }
+  render() {
+    return (
+      <div>
+        <NumericInput id="year" label="年" handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="month" label="月" handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="day" label="日" handleChange={this.handleChange.bind(this)} />
+      </div>
+    )
+  }
+}
 
 class RadioGroup extends React.Component {
   constructor(props) {
@@ -108,6 +135,27 @@ class RadioGroup extends React.Component {
     return (
       <div>
         {rs}
+      </div>
+    );
+  }
+};
+
+class NumericInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ""};
+  }
+  handleChange(elm, e) {
+    this.setState({value: e.target.value});
+    this.props.handleChange(this.props.id, e.target.value);
+  }
+  render() {
+    return (
+      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input className="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id={this.props.id}
+               value={this.state.value} onChange={this.handleChange.bind(this, "")} />
+        <label className="mdl-textfield__label" for={this.props.id}>{this.props.label}</label>
+        <span class="mdl-textfield__error">数字を入力してください。</span>
       </div>
     );
   }
