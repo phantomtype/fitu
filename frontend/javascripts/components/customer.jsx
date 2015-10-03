@@ -76,6 +76,10 @@ class CustomerForm extends React.Component {
         <TextInput id="first_name_kana" label="名(かな)" handleChange={this.handleChange.bind(this)} />
         <RadioGroup id="gender" labels={[{v: "female", l: "女性"}, {v: "man", l: "男性"}]} handleChange={this.handleChange.bind(this)} />
         <DateInput id="birth" handleChange={this.handleChange.bind(this)} />
+        <TextInput id="email" label="email" handleChange={this.handleChange.bind(this)} />
+        <TextInput id="tel" label="tel" handleChange={this.handleChange.bind(this)} />
+        <TextInput id="address" label="住所" handleChange={this.handleChange.bind(this)} />
+        <TextInput id="note" label="備考" handleChange={this.handleChange.bind(this)} />
         <button className="mdl-button mdl-js-button mdl-button--raised">Post</button>
       </form>
     );
@@ -100,9 +104,9 @@ class DateInput extends React.Component {
   render() {
     return (
       <div>
-        <NumericInput id="year" label="年" handleChange={this.handleChange.bind(this)} />
-        <NumericInput id="month" label="月" handleChange={this.handleChange.bind(this)} />
-        <NumericInput id="day" label="日" handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="year" label="生年" handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="month" label="生月" handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="day" label="生日" handleChange={this.handleChange.bind(this)} />
       </div>
     )
   }
@@ -151,11 +155,11 @@ class NumericInput extends React.Component {
   }
   render() {
     return (
-      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <div style={{width: '100px'}} className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input className="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id={this.props.id}
                value={this.state.value} onChange={this.handleChange.bind(this, "")} />
         <label className="mdl-textfield__label" for={this.props.id}>{this.props.label}</label>
-        <span class="mdl-textfield__error">数字を入力してください。</span>
+        <span className="mdl-textfield__error">数字を入力してください。</span>
       </div>
     );
   }
