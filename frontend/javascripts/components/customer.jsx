@@ -19,6 +19,7 @@ export default class CustomerBox extends React.Component {
     });
   }
   handleCustomerSubmit(customer) {
+    let url = '/api/v1/customers.json';
     this.setState({data: this.state.data.concat([customer])});
     $.ajax({
       url: url,
@@ -58,13 +59,8 @@ class CustomerForm extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    var author = this.state.author;
-    var text = this.state.text;
-    if (!text || !author) {
-      return;
-    }
-    this.props.onCustomerSubmit({author: author, text: text});
-    this.setState({author: "", text: ""});
+    this.props.onCustomerSubmit({customer: this.state});
+    this.setState({});
     return;
   }
   render() {
