@@ -70,17 +70,37 @@ class CustomerForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
-        <TextInput id="last_name" label="氏" handleChange={this.handleChange.bind(this)} />
-        <TextInput id="first_name" label="名" handleChange={this.handleChange.bind(this)} />
-        <TextInput id="last_name_kana" label="氏(かな)" handleChange={this.handleChange.bind(this)} />
-        <TextInput id="first_name_kana" label="名(かな)" handleChange={this.handleChange.bind(this)} />
-        <RadioGroup id="gender" labels={[{v: "female", l: "女性"}, {v: "man", l: "男性"}]} handleChange={this.handleChange.bind(this)} />
-        <DateInput id="birth" handleChange={this.handleChange.bind(this)} />
-        <TextInput id="email" label="email" handleChange={this.handleChange.bind(this)} />
-        <TextInput id="tel" label="tel" handleChange={this.handleChange.bind(this)} />
-        <TextInput id="address" label="住所" handleChange={this.handleChange.bind(this)} />
-        <TextInput id="note" label="備考" handleChange={this.handleChange.bind(this)} />
-        <button className="mdl-button mdl-js-button mdl-button--raised">Post</button>
+        <div className="mdl-grid">
+          <TextInput id="last_name" label="氏" col="3" handleChange={this.handleChange.bind(this)} />
+          <TextInput id="first_name" label="名" col="3" handleChange={this.handleChange.bind(this)} />
+        </div>
+        <div className="mdl-grid">
+          <TextInput id="last_name_kana" label="氏(かな)" col="3" handleChange={this.handleChange.bind(this)} />
+          <TextInput id="first_name_kana" label="名(かな)" col="3" handleChange={this.handleChange.bind(this)} />
+        </div>
+        <div className="mdl-grid">
+          <div className="mdl-cell mdl-cell--4-col">
+            <RadioGroup id="gender" labels={[{v: "female", l: "女性"}, {v: "man", l: "男性"}]} handleChange={this.handleChange.bind(this)} />
+          </div>
+        </div>
+        <div className="mdl-grid">
+            <DateInput id="birth" handleChange={this.handleChange.bind(this)} />
+        </div>
+        <div className="mdl-grid">
+          <TextInput id="email" label="email" col="4" handleChange={this.handleChange.bind(this)} />
+          <TextInput id="tel" label="tel" col="4" handleChange={this.handleChange.bind(this)} />
+        </div>
+        <div className="mdl-grid">
+          <TextInput id="address" label="住所" width="550px" col="8" handleChange={this.handleChange.bind(this)} />
+        </div>
+        <div className="mdl-grid">
+          <TextInput id="note" label="備考" col="8" handleChange={this.handleChange.bind(this)} />
+        </div>
+        <div className="mdl-grid">
+          <div className="mdl-cell mdl-cell--8-col">
+            <button className="mdl-button mdl-js-button mdl-button--raised">Post</button>
+          </div>
+        </div>
       </form>
     );
   }
@@ -103,10 +123,10 @@ class DateInput extends React.Component {
   }
   render() {
     return (
-      <div>
-        <NumericInput id="year" label="生年" handleChange={this.handleChange.bind(this)} />
-        <NumericInput id="month" label="生月" handleChange={this.handleChange.bind(this)} />
-        <NumericInput id="day" label="生日" handleChange={this.handleChange.bind(this)} />
+      <div style={{display: "inherit"}}>
+        <NumericInput id="year" label="生年" col="1" handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="month" label="生月" col="1" handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="day" label="生日" col="1" handleChange={this.handleChange.bind(this)} />
       </div>
     )
   }
@@ -155,11 +175,13 @@ class NumericInput extends React.Component {
   }
   render() {
     return (
-      <div style={{width: '100px'}} className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <div className={"mdl-cell mdl-cell--" + this.props.col + "-col"}>
+      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input className="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id={this.props.id}
                value={this.state.value} onChange={this.handleChange.bind(this, "")} />
         <label className="mdl-textfield__label" for={this.props.id}>{this.props.label}</label>
         <span className="mdl-textfield__error">数字を入力してください。</span>
+      </div>
       </div>
     );
   }
@@ -176,10 +198,12 @@ class TextInput extends React.Component {
   }
   render() {
     return (
-      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <div className={"mdl-cell mdl-cell--" + this.props.col + "-col"}>
+      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style={{width: this.props.width}}>
         <input className="mdl-textfield__input" type="text" id={this.props.id}
                value={this.state.value} onChange={this.handleChange.bind(this, "")} />
         <label className="mdl-textfield__label" for={this.props.id}>{this.props.label}</label>
+      </div>
       </div>
     );
   }
