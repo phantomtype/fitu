@@ -3,7 +3,7 @@ import React from 'react';
 export default class CustomerBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {data: []};
+    this.state = {data: [], adding: false};
   }
   loadCommentsFromServer() {
     let url = '/api/v1/customers.json';
@@ -36,11 +36,17 @@ export default class CustomerBox extends React.Component {
   componentDidMount() {
     this.loadCommentsFromServer();
   }
+  clickAdd() {
+    this.setState({adding: true})
+  }
   render() {
     return (
       <div className="customerBox">
         <h3>顧客管理</h3>
-        <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} />
+        <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} visible={this.state.adding} />
+        <button className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onClick={this.clickAdd.bind(this)}>
+          <i className="material-icons">add</i>
+        </button>
         <CustomerList data={this.state.data} />
       </div>
     );
@@ -65,7 +71,7 @@ class CustomerForm extends React.Component {
   }
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
+      <form onSubmit={this.handleSubmit.bind(this)} style={this.props.visible ?  {} : {display: "none"}}>
         <div className="mdl-grid">
           <TextInput id="last_name" label="氏" col="3" handleChange={this.handleChange.bind(this)} />
           <TextInput id="first_name" label="名" col="3" handleChange={this.handleChange.bind(this)} />
@@ -222,6 +228,10 @@ class CustomerList extends React.Component {
           <th>かな</th>
           <th>性別</th>
           <th>年齢</th>
+          <th>email</th>
+          <th>tel</th>
+          <th>address</th>
+          <th>note</th>
         </tr>
         </thead>
         <tbody>
@@ -237,8 +247,15 @@ class Customer extends React.Component {
     let c = this.props.customer;
     return (
       <tr>
+        <td></td>
         <td>{c.last_name} {c.first_name}</td>
         <td>{c.last_name_kana} {c.first_name_kana}</td>
+        <td>{c.gender}</td>
+        <td>{c.age}</td>
+        <td>{c.email}</td>
+        <td>{c.tel}</td>
+        <td>{c.address}</td>
+        <td>{c.note}</td>
       </tr>
     );
   }
