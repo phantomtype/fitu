@@ -152,7 +152,7 @@ class Customer extends React.Component {
     let c = this.props.customer;
     return (
       <tr>
-        <td></td>
+        <td>{c.club_number}</td>
         <td>{c.last_name} {c.first_name}</td>
         <td>{c.last_name_kana} {c.first_name_kana}</td>
         <td>{c.gender}</td>
