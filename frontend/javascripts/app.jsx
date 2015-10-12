@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, Link } from 'react-router';
 
 import CustomerBox from './components/customer.jsx';
+import CustomerSearch from './components/customer_search.jsx';
 
 class App extends React.Component {
   render() {
@@ -13,6 +14,7 @@ class App extends React.Component {
             <div className="mdl-layout-spacer"></div>
             <nav className="mdl-navigation">
               <Link className="mdl-navigation__link" to="/customers">顧客管理</Link>
+              <Link className="mdl-navigation__link" to="/customers/search">検索</Link>
             </nav>
           </div>
         </header>
@@ -20,6 +22,7 @@ class App extends React.Component {
           <span className="mdl-layout-title">FitYou</span>
           <nav className="mdl-navigation">
             <Link className="mdl-navigation__link" to="/customers">顧客管理</Link>
+            <Link className="mdl-navigation__link" to="/customers/search">検索</Link>
           </nav>
         </div>
         <main className="mdl-layout__content content">
@@ -34,6 +37,7 @@ React.render((
   <Router>
     <Route path="/" component={App}>
       <Route path="customers" component={CustomerBox} />
+      <Route path="customers/search" component={CustomerSearch} />
     </Route>
   </Router>
 ), document.getElementById('app'));

@@ -1,6 +1,6 @@
 class Api::V1::CustomersController < ApplicationController
   def index
-    @data = Customer.all
+    @data = Customer.kana(params[:q])
   end
 
   def create

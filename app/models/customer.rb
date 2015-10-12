@@ -1,4 +1,6 @@
 class Customer < ActiveRecord::Base
+  scope :kana, lambda {|word| where('last_name_kana like ? or first_name_kana like ?', "%#{word}%", "%#{word}%")}
+
   def age
     return nil if self.birth.blank?
 
