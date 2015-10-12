@@ -3,7 +3,7 @@ import React from 'react';
 export default class RadioGroup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: 'female'};
+    this.state = {value: props.value};
   }
   handleChange(elm, e) {
     this.setState({value: e.target.value});

@@ -20,9 +20,9 @@ export default class DateInput extends React.Component {
   render() {
     return (
       <div style={{display: "inherit"}}>
-        <NumericInput id="year" label="生年" col="1" handleChange={this.handleChange.bind(this)} />
-        <NumericInput id="month" label="生月" col="1" handleChange={this.handleChange.bind(this)} />
-        <NumericInput id="day" label="生日" col="1" handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="year" label="生年" col="1" value={this.state.year} handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="month" label="生月" col="1" value={this.state.month} handleChange={this.handleChange.bind(this)} />
+        <NumericInput id="day" label="生日" col="1" value={this.state.day} handleChange={this.handleChange.bind(this)} />
       </div>
     )
   }

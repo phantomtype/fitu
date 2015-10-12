@@ -3,7 +3,7 @@ import React from 'react';
 export default class TextInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ""};
+    this.state = {value: props.value};
   }
   handleChange(elm, e) {
     this.setState({value: e.target.value});
