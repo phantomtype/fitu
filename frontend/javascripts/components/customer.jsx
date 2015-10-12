@@ -1,5 +1,9 @@
 import React from 'react';
 
+import DateInput    from './date_input.jsx';
+import RadioGroup   from './radio_group.jsx';
+import TextInput    from './text_input.jsx';
+
 export default class CustomerBox extends React.Component {
   constructor(props) {
     super(props);
@@ -104,109 +108,6 @@ class CustomerForm extends React.Component {
           </div>
         </div>
       </form>
-    );
-  }
-};
-
-class DateInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {year: "", month: "", day: ""};
-  }
-  handleChange(elm, e) {
-    var newState = {};
-    newState[elm] = e;
-    this.setState(newState);
-    if (this.state.year && this.state.month && this.state.day) {
-      let date = new Date(this.state.year, this.state.month - 1, this.state.day)
-      console.log(date)
-      this.props.handleChange(this.props.id, date)
-    }
-  }
-  render() {
-    return (
-      <div style={{display: "inherit"}}>
-        <NumericInput id="year" label="生年" col="1" handleChange={this.handleChange.bind(this)} />
-        <NumericInput id="month" label="生月" col="1" handleChange={this.handleChange.bind(this)} />
-        <NumericInput id="day" label="生日" col="1" handleChange={this.handleChange.bind(this)} />
-      </div>
-    )
-  }
-}
-
-class RadioGroup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: 'female'};
-  }
-  handleChange(elm, e) {
-    this.setState({value: e.target.value});
-    this.props.handleChange(this.props.id, e.target.value);
-  }
-  render() {
-    let rs = this.props.labels.map((label) => {
-      return (
-        <label for={this.props.id} className="mdl-radio mdl-js-radio">
-          <input
-            className="mdl-radio__button"
-            type="radio"
-            value={label.v}
-            id={label.v}
-            checked={this.state.value == label.v}
-            onChange={this.handleChange.bind(this, "")} />
-          <span className="mdl-radio__label">{label.l}</span>
-        </label>
-      )
-    });
-    return (
-      <div>
-        {rs}
-      </div>
-    );
-  }
-};
-
-class NumericInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: ""};
-  }
-  handleChange(elm, e) {
-    this.setState({value: e.target.value});
-    this.props.handleChange(this.props.id, e.target.value);
-  }
-  render() {
-    return (
-      <div className={"mdl-cell mdl-cell--" + this.props.col + "-col"}>
-      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input className="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id={this.props.id}
-               value={this.state.value} onChange={this.handleChange.bind(this, "")} />
-        <label className="mdl-textfield__label" for={this.props.id}>{this.props.label}</label>
-        <span className="mdl-textfield__error">数字を入力してください。</span>
-      </div>
-      </div>
-    );
-  }
-};
-
-class TextInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: ""};
-  }
-  handleChange(elm, e) {
-    this.setState({value: e.target.value});
-    this.props.handleChange(this.props.id, e.target.value);
-  }
-  render() {
-    return (
-      <div className={"mdl-cell mdl-cell--" + this.props.col + "-col"}>
-      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style={{width: this.props.width}}>
-        <input className="mdl-textfield__input" type="text" id={this.props.id}
-               value={this.state.value} onChange={this.handleChange.bind(this, "")} />
-        <label className="mdl-textfield__label" for={this.props.id}>{this.props.label}</label>
-      </div>
-      </div>
     );
   }
 };
