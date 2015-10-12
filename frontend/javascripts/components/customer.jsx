@@ -46,11 +46,12 @@ export default class CustomerBox extends React.Component {
   render() {
     return (
       <div className="customerBox">
-        <h3>顧客管理</h3>
+        <h3>顧客管理
+          <button className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--right" onClick={this.clickAdd.bind(this)}>
+            <i className="material-icons">add</i>
+          </button>
+        </h3>
         <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} visible={this.state.adding} />
-        <button className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onClick={this.clickAdd.bind(this)}>
-          <i className="material-icons">add</i>
-        </button>
         <CustomerList data={this.state.data} />
       </div>
     );
@@ -76,6 +77,9 @@ class CustomerForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)} style={this.props.visible ?  {} : {display: "none"}}>
+        <div className="mdl-grid">
+          <TextInput id="club_number" label="会員番号" col="4" handleChange={this.handleChange.bind(this)} />
+        </div>
         <div className="mdl-grid">
           <TextInput id="last_name" label="氏" col="3" handleChange={this.handleChange.bind(this)} />
           <TextInput id="first_name" label="名" col="3" handleChange={this.handleChange.bind(this)} />

@@ -10,3 +10,7 @@ button {
 .customerBox {
     width: 650px;
 }
+
+.mdl-button--right {
+    float: right;
+}
