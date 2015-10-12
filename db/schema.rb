@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20150920080223) do
   end
 
   create_table "customers", force: :cascade do |t|
+    t.string   "club_number"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "first_name_kana"
