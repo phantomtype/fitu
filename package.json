@@ -25,7 +25,7 @@
     "marked": "^0.3.5",
     "react": "^0.13.3",
     "react-bootstrap": "^0.25.1",
-    "react-router": "^1.0.0-rc1",
+    "react-router": "^1.0.0-rc3",
     "vinyl-source-stream": "^1.1.0"
   },
   "devDependencies": {
