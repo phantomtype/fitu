@@ -43,12 +43,24 @@ export default class CustomerBox extends React.Component {
   clickAdd() {
     this.setState({adding: true})
   }
+  clickClose() {
+    this.setState({adding: false})
+  }
   render() {
-    var addButton = ''
+    var addButton = "";
     if (!this.state.adding) {
       addButton =
-        <button className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--right" onClick={this.clickAdd.bind(this)}>
+        <button
+          className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--right"
+          onClick={this.clickAdd.bind(this)}>
           <i className="material-icons">add</i>
+        </button>
+    } else {
+      addButton =
+        <button
+          className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--right"
+          onClick={this.clickClose.bind(this)}>
+          <i className="material-icons">close</i>
         </button>
     }
     return (
