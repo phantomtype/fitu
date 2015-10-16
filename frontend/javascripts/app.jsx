@@ -1,6 +1,8 @@
 import React from 'react';
 import { Router, Route, Link } from 'react-router';
 
+const RaisedButton = require('material-ui/lib/raised-button');
+
 import CustomerBox from './components/customer.jsx';
 import CustomerSearch from './components/customer_search.jsx';
 
@@ -26,6 +28,7 @@ class App extends React.Component {
           </nav>
         </div>
         <main className="mdl-layout__content content">
+          <RaisedButton label="aieuo" primary={true} />
           {this.props.children}
         </main>
       </div>
