@@ -37,13 +37,14 @@ export default class CustomerBox extends React.Component {
   handleCustomerSubmit() {
     let url = '/api/v1/customers.json';
     let customer = this.state.edit_customer;
+    delete customer.age;
     $.ajax({
       url: url,
       dataType: 'json',
       type: 'POST',
-      data: customer,
+      data: {customer: customer},
       success: function(data) {
-        this.setState({data: this.state.data.concat([customer.customer])});
+        this.setState({data: this.state.data.concat([customer])});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
