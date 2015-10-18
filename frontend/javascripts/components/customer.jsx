@@ -136,7 +136,7 @@ class CustomerForm extends React.Component {
         <TextField floatingLabelText="備考"    value={this.state.note} onChange={this.handleChange.bind(this, "note")} fullWidth={true} />
         <br />
 
-        <RaisedButton label="Post" primary={true} />
+        <RaisedButton label="Post" primary={true} onClick={this.handleSubmit.bind(this)} />
       </form>
     );
   }
@@ -151,19 +151,6 @@ class CustomerList extends React.Component {
       );
     });
     return (
-      //<Table selectable={false}>
-      //  <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-      //  <TableRow>
-      //    <TableHeaderColumn>会員番号</TableHeaderColumn>
-      //    <TableHeaderColumn>氏名</TableHeaderColumn>
-      //    <TableHeaderColumn>かな</TableHeaderColumn>
-      //    <TableHeaderColumn>note</TableHeaderColumn>
-      //  </TableRow>
-      //  </TableHeader>
-      //  <TableBody>
-      //  {nodes}
-      //  </TableBody>
-      //</Table>
       <List>
         {nodes}
       </List>
@@ -176,12 +163,6 @@ class Customer extends React.Component {
     let c = this.props.customer;
     let text = c.club_number + ": " + c.last_name + c.first_name + "(" + c.last_name_kana + c.first_name_kana + ")"
     return (
-      //<TableRow>
-      //  <TableRowColumn>{c.club_number}</TableRowColumn>
-      //  <TableRowColumn>{c.last_name} {c.first_name}</TableRowColumn>
-      //  <TableRowColumn>{c.last_name_kana} {c.first_name_kana}</TableRowColumn>
-      //  <TableRowColumn>{c.note}</TableRowColumn>
-      //</TableRow>
       <ListItem primaryText={text} />
     );
   }
