@@ -7,10 +7,14 @@
     /*right: 24px;*/
 /*}*/
 
-.customerBox {
-    width: 650px;
-}
+/*.customerBox {*/
+    /*width: 650px;*/
+/*}*/
 
 .mdl-button--right {
     float: right;
+}
+
+body {
+    margin: 0;
 }

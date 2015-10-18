@@ -4,6 +4,13 @@ import DateInput    from './date_input.jsx';
 import RadioGroup   from './radio_group.jsx';
 import TextInput    from './text_input.jsx';
 
+import {Table, TableHeader, TableHeaderColumn, TableBody, TableRow, TableRowColumn} from 'material-ui/lib/table';
+let TextField = require('material-ui/lib/text-field') // cannot use import
+let RadioButtonGroup = require('material-ui/lib/radio-button-group')
+let RadioButton = require('material-ui/lib/radio-button-group')
+import { DatePicker } from 'material-ui/lib/date-picker' // cannot use let
+let RaisedButton = require('material-ui/lib/raised-button')
+
 export default class CustomerBox extends React.Component {
   constructor(props) {
     super(props);
@@ -80,7 +87,12 @@ class CustomerForm extends React.Component {
   }
   handleChange(elm, e) {
     var newState = {};
-    newState[elm] = e;
+    newState[elm] = e.target.value;
+    this.setState(newState);
+  }
+  handleDateChange(elm, e, date) {
+    var newState = {};
+    newState[elm] = date;
     this.setState(newState);
   }
   handleSubmit(e) {
@@ -95,40 +107,30 @@ class CustomerForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)} style={this.props.visible ?  {} : {display: "none"}}>
-        <div className="mdl-grid">
-          <TextInput id="club_number" label="会員番号" col="4" value={this.state.club_number} handleChange={this.handleChange.bind(this)} />
-        </div>
-        <div className="mdl-grid">
-          <TextInput id="last_name" label="氏" col="3" value={this.state.last_name} handleChange={this.handleChange.bind(this)} />
-          <TextInput id="first_name" label="名" col="3" value={this.state.first_name} handleChange={this.handleChange.bind(this)} />
-        </div>
-        <div className="mdl-grid">
-          <TextInput id="last_name_kana" label="氏(かな)" col="3" value={this.state.last_name_kana} handleChange={this.handleChange.bind(this)} />
-          <TextInput id="first_name_kana" label="名(かな)" col="3" value={this.state.first_name_kana} handleChange={this.handleChange.bind(this)} />
-        </div>
-        <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--4-col">
-            <RadioGroup id="gender" labels={[{v: "female", l: "女性"}, {v: "man", l: "男性"}]} value={this.state.gender} handleChange={this.handleChange.bind(this)} />
-          </div>
-        </div>
-        <div className="mdl-grid">
-            <DateInput id="birth" value={this.state.birth} handleChange={this.handleChange.bind(this)} />
-        </div>
-        <div className="mdl-grid">
-          <TextInput id="email" label="email" col="4" value={this.state.email} handleChange={this.handleChange.bind(this)} />
-          <TextInput id="tel" label="tel" col="4" value={this.state.tel} handleChange={this.handleChange.bind(this)} />
-        </div>
-        <div className="mdl-grid">
-          <TextInput id="address" label="住所" width="550px" col="8" value={this.state.address} handleChange={this.handleChange.bind(this)} />
-        </div>
-        <div className="mdl-grid">
-          <TextInput id="note" label="備考" col="8" value={this.state.note} handleChange={this.handleChange.bind(this)} />
-        </div>
-        <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--8-col">
-            <button className="mdl-button mdl-js-button mdl-button--raised">Post</button>
-          </div>
-        </div>
+        <TextField floatingLabelText="会員番号" value={this.state.club_number} onChange={this.handleChange.bind(this, "club_number")} />
+        <br />
+        <TextField floatingLabelText="氏" value={this.state.last_name} onChange={this.handleChange.bind(this, "last_name")} />
+        <TextField floatingLabelText="名" value={this.state.first_name} onChange={this.handleChange.bind(this, "first_name")} />
+        <br />
+        <TextField floatingLabelText="氏(かな)" value={this.state.last_name_kana} onChange={this.handleChange.bind(this, "last_name_kana")} />
+        <TextField floatingLabelText="名(かな)" value={this.state.first_name_kana} onChange={this.handleChange.bind(this, "first_name_kana")} />
+        <br />
+        <RadioButtonGroup onChange={this.handleChange.bind(this, "gender")} defaultSelected={this.state.gender}>
+          <RadioButton label="女性" value="female" />
+          <RadioButton label="男性" value="man" />
+        </RadioButtonGroup>
+        <br />
+        <DatePicker hintText="生年月日" autoOk={true} mode="landscape" value={this.state.birth} onChange={this.handleDateChange.bind(this, "birth")} />
+        <br />
+        <TextField floatingLabelText="email"   value={this.state.email} onChange={this.handleChange.bind(this, "email")} type="email" />
+        <TextField floatingLabelText="tel"     value={this.state.tel} onChange={this.handleChange.bind(this, "tel")} />
+        <br />
+        <TextField floatingLabelText="住所" value={this.state.address} onChange={this.handleChange.bind(this, "address")} fullWidth={true} />
+        <br />
+        <TextField floatingLabelText="備考"    value={this.state.note} onChange={this.handleChange.bind(this, "note")} fullWidth={true} />
+        <br />
+
+        <RaisedButton label="Post" primary={true} />
       </form>
     );
   }
@@ -143,24 +145,24 @@ class CustomerList extends React.Component {
       );
     });
     return (
-      <table className="mdl-data-table">
-        <thead>
-        <tr>
-          <th>会員番号</th>
-          <th>氏名</th>
-          <th>かな</th>
-          <th>性別</th>
-          <th>年齢</th>
-          <th>email</th>
-          <th>tel</th>
-          <th>address</th>
-          <th>note</th>
-        </tr>
-        </thead>
-        <tbody>
+      <Table>
+        <TableHeader>
+        <TableRow>
+          <TableHeaderColumn>会員番号</TableHeaderColumn>
+          <TableHeaderColumn>氏名</TableHeaderColumn>
+          <TableHeaderColumn>かな</TableHeaderColumn>
+          <TableHeaderColumn>性別</TableHeaderColumn>
+          <TableHeaderColumn>年齢</TableHeaderColumn>
+          <TableHeaderColumn>email</TableHeaderColumn>
+          <TableHeaderColumn>tel</TableHeaderColumn>
+          <TableHeaderColumn>address</TableHeaderColumn>
+          <TableHeaderColumn>note</TableHeaderColumn>
+        </TableRow>
+        </TableHeader>
+        <TableBody>
         {nodes}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     );
   }
 };
@@ -169,17 +171,17 @@ class Customer extends React.Component {
   render() {
     let c = this.props.customer;
     return (
-      <tr>
-        <td>{c.club_number}</td>
-        <td>{c.last_name} {c.first_name}</td>
-        <td>{c.last_name_kana} {c.first_name_kana}</td>
-        <td>{c.gender}</td>
-        <td>{c.age}</td>
-        <td>{c.email}</td>
-        <td>{c.tel}</td>
-        <td>{c.address}</td>
-        <td>{c.note}</td>
-      </tr>
+      <TableRow>
+        <TableRowColumn>{c.club_number}</TableRowColumn>
+        <TableRowColumn>{c.last_name} {c.first_name}</TableRowColumn>
+        <TableRowColumn>{c.last_name_kana} {c.first_name_kana}</TableRowColumn>
+        <TableRowColumn>{c.gender}</TableRowColumn>
+        <TableRowColumn>{c.age}</TableRowColumn>
+        <TableRowColumn>{c.email}</TableRowColumn>
+        <TableRowColumn>{c.tel}</TableRowColumn>
+        <TableRowColumn>{c.address}</TableRowColumn>
+        <TableRowColumn>{c.note}</TableRowColumn>
+      </TableRow>
     );
   }
 };
