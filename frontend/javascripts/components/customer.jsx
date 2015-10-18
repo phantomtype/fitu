@@ -1,12 +1,13 @@
 import React from 'react';
 
-import {Table, TableHeader, TableHeaderColumn, TableBody, TableRow, TableRowColumn} from 'material-ui/lib/table';
+import {List, ListItem} from 'material-ui/lib/lists';
 let TextField = require('material-ui/lib/text-field') // cannot use import
 let RadioButtonGroup = require('material-ui/lib/radio-button-group')
 let RadioButton = require('material-ui/lib/radio-button-group')
 import { DatePicker } from 'material-ui/lib/date-picker' // cannot use let
 let RaisedButton = require('material-ui/lib/raised-button')
 let FloatingActionButton = require('material-ui/lib/floating-action-button')
+let {GridList} = require('material-ui/lib/grid-list')
 
 export default class CustomerBox extends React.Component {
   constructor(props) {
@@ -76,8 +77,10 @@ export default class CustomerBox extends React.Component {
             <TextField floatingLabelText="検索" value={this.state.q} onChange={this.handleQueryChanged.bind(this)} />
           </span>
           {addButton}</h3>
-        <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} visible={this.state.adding} />
-        <CustomerList data={this.state.data} />
+        <GridList cols="2">
+          <CustomerList data={this.state.data} />
+          <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} visible={this.state.adding} />
+        </GridList>
       </div>
     );
   }
@@ -148,24 +151,22 @@ class CustomerList extends React.Component {
       );
     });
     return (
-      <Table selectable={false}>
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-        <TableRow>
-          <TableHeaderColumn>会員番号</TableHeaderColumn>
-          <TableHeaderColumn>氏名</TableHeaderColumn>
-          <TableHeaderColumn>かな</TableHeaderColumn>
-          <TableHeaderColumn>性別</TableHeaderColumn>
-          <TableHeaderColumn>年齢</TableHeaderColumn>
-          <TableHeaderColumn>email</TableHeaderColumn>
-          <TableHeaderColumn>tel</TableHeaderColumn>
-          <TableHeaderColumn>address</TableHeaderColumn>
-          <TableHeaderColumn>note</TableHeaderColumn>
-        </TableRow>
-        </TableHeader>
-        <TableBody>
+      //<Table selectable={false}>
+      //  <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+      //  <TableRow>
+      //    <TableHeaderColumn>会員番号</TableHeaderColumn>
+      //    <TableHeaderColumn>氏名</TableHeaderColumn>
+      //    <TableHeaderColumn>かな</TableHeaderColumn>
+      //    <TableHeaderColumn>note</TableHeaderColumn>
+      //  </TableRow>
+      //  </TableHeader>
+      //  <TableBody>
+      //  {nodes}
+      //  </TableBody>
+      //</Table>
+      <List>
         {nodes}
-        </TableBody>
-      </Table>
+      </List>
     );
   }
 };
@@ -173,18 +174,15 @@ class CustomerList extends React.Component {
 class Customer extends React.Component {
   render() {
     let c = this.props.customer;
+    let text = c.club_number + ": " + c.last_name + c.first_name + "(" + c.last_name_kana + c.first_name_kana + ")"
     return (
-      <TableRow>
-        <TableRowColumn>{c.club_number}</TableRowColumn>
-        <TableRowColumn>{c.last_name} {c.first_name}</TableRowColumn>
-        <TableRowColumn>{c.last_name_kana} {c.first_name_kana}</TableRowColumn>
-        <TableRowColumn>{c.gender}</TableRowColumn>
-        <TableRowColumn>{c.age}</TableRowColumn>
-        <TableRowColumn>{c.email}</TableRowColumn>
-        <TableRowColumn>{c.tel}</TableRowColumn>
-        <TableRowColumn>{c.address}</TableRowColumn>
-        <TableRowColumn>{c.note}</TableRowColumn>
-      </TableRow>
+      //<TableRow>
+      //  <TableRowColumn>{c.club_number}</TableRowColumn>
+      //  <TableRowColumn>{c.last_name} {c.first_name}</TableRowColumn>
+      //  <TableRowColumn>{c.last_name_kana} {c.first_name_kana}</TableRowColumn>
+      //  <TableRowColumn>{c.note}</TableRowColumn>
+      //</TableRow>
+      <ListItem primaryText={text} />
     );
   }
 };
