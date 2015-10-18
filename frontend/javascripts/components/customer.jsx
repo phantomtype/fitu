@@ -6,6 +6,7 @@ let RadioButtonGroup = require('material-ui/lib/radio-button-group')
 let RadioButton = require('material-ui/lib/radio-button-group')
 import { DatePicker } from 'material-ui/lib/date-picker' // cannot use let
 let RaisedButton = require('material-ui/lib/raised-button')
+let FloatingActionButton = require('material-ui/lib/floating-action-button')
 
 export default class CustomerBox extends React.Component {
   constructor(props) {
@@ -43,28 +44,25 @@ export default class CustomerBox extends React.Component {
   componentDidMount() {
     this.loadCommentsFromServer();
   }
-  clickAdd() {
-    this.setState({adding: true})
-  }
-  clickClose() {
-    this.setState({adding: false})
+  clickAdd(value) {
+    this.setState({adding: value})
   }
   render() {
     var addButton = "";
     if (!this.state.adding) {
       addButton =
-        <button
-          className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--right"
-          onClick={this.clickAdd.bind(this)}>
+        <FloatingActionButton
+          style={{float: "right"}}
+          onClick={this.clickAdd.bind(this, true)}>
           <i className="material-icons">add</i>
-        </button>
+        </FloatingActionButton>
     } else {
       addButton =
-        <button
-          className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--right"
-          onClick={this.clickClose.bind(this)}>
+        <FloatingActionButton
+          style={{float: "right"}}
+          onClick={this.clickAdd.bind(this, false)} secondary={true}>
           <i className="material-icons">close</i>
-        </button>
+        </FloatingActionButton>
     }
     return (
       <div className="customerBox">
@@ -141,8 +139,8 @@ class CustomerList extends React.Component {
       );
     });
     return (
-      <Table>
-        <TableHeader>
+      <Table selectable={false}>
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
         <TableRow>
           <TableHeaderColumn>会員番号</TableHeaderColumn>
           <TableHeaderColumn>氏名</TableHeaderColumn>
