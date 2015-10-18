@@ -1,9 +1,5 @@
 import React from 'react';
 
-import DateInput    from './date_input.jsx';
-import RadioGroup   from './radio_group.jsx';
-import TextInput    from './text_input.jsx';
-
 import {Table, TableHeader, TableHeaderColumn, TableBody, TableRow, TableRowColumn} from 'material-ui/lib/table';
 let TextField = require('material-ui/lib/text-field') // cannot use import
 let RadioButtonGroup = require('material-ui/lib/radio-button-group')
