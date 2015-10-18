@@ -8,11 +8,12 @@ import { DatePicker } from 'material-ui/lib/date-picker' // cannot use let
 let RaisedButton = require('material-ui/lib/raised-button')
 let FloatingActionButton = require('material-ui/lib/floating-action-button')
 let {GridList} = require('material-ui/lib/grid-list')
+import Snackbar from 'material-ui/lib/snackbar'
 
 export default class CustomerBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {data: [], adding: false, q: "",
+    this.state = {data: [], adding: false, q: "", snack_message: "",
       edit_customer: {
         club_number: "",
         first_name: "",
@@ -50,8 +51,11 @@ export default class CustomerBox extends React.Component {
       data: {customer: customer},
       success: function(data) {
         if (customer.id == undefined) {
-          this.setState({data: this.state.data.concat([customer])});
+          this.setState({data: this.state.data.concat([customer]), snack_message: "追加しました。"});
+        } else {
+          this.setState({snack_message: "更新しました。"})
         }
+        this.refs.snackbar.show();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -108,6 +112,7 @@ export default class CustomerBox extends React.Component {
                         handleCustomerChange={this.handleCustomerChange.bind(this)}
                         visible={this.state.adding} />
         </GridList>
+        <Snackbar ref="snackbar" message={this.state.snack_message} />
       </div>
     );
   }
