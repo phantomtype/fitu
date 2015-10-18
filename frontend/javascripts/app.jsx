@@ -16,12 +16,16 @@ class App extends React.Component {
       <div>
         <AppBar
           title="FitYou"
-          iconElementRight={<FlatButton label="Save" />} />
-        <main className="mdl-layout__content content">
+          iconElementRight={<FlatButton label="顧客" onClick={this.get_customers.bind(this)} />} />
+        <main className="content">
           {this.props.children}
         </main>
       </div>
     )
+  }
+
+  get_customers() {
+    this.props.history.pushState(null, "/customers");
   }
 };
 
