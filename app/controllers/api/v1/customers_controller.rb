@@ -8,6 +8,12 @@ class Api::V1::CustomersController < ApplicationController
     render :show, status: :created
   end
 
+  def update
+    @customer = Customer.find(params[:id])
+    @customer.update!(customer_params)
+    render :show, status: :created
+  end
+
   private
 
   def customer_params

@@ -35,16 +35,23 @@ export default class CustomerBox extends React.Component {
     });
   }
   handleCustomerSubmit() {
-    let url = '/api/v1/customers.json';
+    var url = '/api/v1/customers.json';
+    var method = 'POST'
     let customer = this.state.edit_customer;
     delete customer.age;
+    if (customer.id !== undefined) {
+      url = '/api/v1/customers/' + customer.id + '.json';
+      method = 'PUT'
+    }
     $.ajax({
       url: url,
       dataType: 'json',
-      type: 'POST',
+      type: method,
       data: {customer: customer},
       success: function(data) {
-        this.setState({data: this.state.data.concat([customer])});
+        if (customer.id == undefined) {
+          this.setState({data: this.state.data.concat([customer])});
+        }
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -123,6 +130,10 @@ class CustomerForm extends React.Component {
   }
   render() {
     let c = this.props.edit_customer;
+    var birth = ""
+    if (c.birth !== undefined) {
+      birth = new Date(c.birth)
+    }
     return (
       <form onSubmit={this.handleSubmit.bind(this)} style={this.props.visible ?  {} : {display: "none"}}>
         <TextField floatingLabelText="会員番号" value={c.club_number} onChange={this.handleChange.bind(this, "club_number")} />
@@ -141,7 +152,7 @@ class CustomerForm extends React.Component {
         <DatePicker floatingLabelText="生年月日"
                     autoOk={true}
                     mode="landscape"
-                    value={new Date(c.birth)}
+                    value={birth}
                     formatDate={(dt) => `${dt.getFullYear()}/${dt.getMonth() + 1}/${dt.getDate()}`}
                     onChange={this.handleDateChange.bind(this, "birth")} />
         <br />
