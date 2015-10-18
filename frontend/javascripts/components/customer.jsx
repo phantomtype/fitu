@@ -12,7 +12,14 @@ let {GridList} = require('material-ui/lib/grid-list')
 export default class CustomerBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {data: [], adding: false, q: ""};
+    this.state = {data: [], adding: false, q: "",
+      edit_customer: {
+        club_number: "",
+        first_name: "",
+        last_name: "",
+        first_name_kana: "",
+        last_name_kana: "",
+      }};
   }
   loadCommentsFromServer() {
     let url = '/api/v1/customers.json';
@@ -27,8 +34,9 @@ export default class CustomerBox extends React.Component {
       }.bind(this)
     });
   }
-  handleCustomerSubmit(customer) {
+  handleCustomerSubmit() {
     let url = '/api/v1/customers.json';
+    let customer = this.state.edit_customer;
     $.ajax({
       url: url,
       dataType: 'json',
@@ -51,6 +59,14 @@ export default class CustomerBox extends React.Component {
   handleQueryChanged(elm) {
     this.setState({q: elm.target.value});
     this.loadCommentsFromServer();
+  }
+  onCustomerClick(customer) {
+    this.setState({adding: true, edit_customer: customer});
+  }
+  handleCustomerChange(elm, value) {
+    var newState = this.state.edit_customer;
+    newState[elm] = value;
+    this.setState({edit_customer: newState});
   }
   render() {
     var addButton = "";
@@ -78,8 +94,11 @@ export default class CustomerBox extends React.Component {
           </span>
           {addButton}</h3>
         <GridList cols="2">
-          <CustomerList data={this.state.data} />
-          <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} visible={this.state.adding} />
+          <CustomerList data={this.state.data} onCustomerClick={this.onCustomerClick.bind(this)} />
+          <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)}
+                        edit_customer={this.state.edit_customer}
+                        handleCustomerChange={this.handleCustomerChange.bind(this)}
+                        visible={this.state.adding} />
         </GridList>
       </div>
     );
@@ -89,51 +108,48 @@ export default class CustomerBox extends React.Component {
 class CustomerForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {club_number: '', gender: "female"};
   }
   handleChange(elm, e) {
-    var newState = {};
-    newState[elm] = e.target.value;
-    this.setState(newState);
+    this.props.handleCustomerChange(elm, e.target.value)
   }
   handleDateChange(elm, e, date) {
-    var newState = {};
-    newState[elm] = date;
-    this.setState(newState);
+    this.props.handleCustomerChange(elm, date)
   }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.onCustomerSubmit({customer: this.state});
-    this.setState({
-      club_number: '', last_name: "", first_name: "", last_name_kana: '', first_name_kana: '',
-      gender: 'female', birth: '', email: '', tel: '', address: '', note: ''
-    });
+    this.props.onCustomerSubmit();
     return;
   }
   render() {
+    let c = this.props.edit_customer;
     return (
       <form onSubmit={this.handleSubmit.bind(this)} style={this.props.visible ?  {} : {display: "none"}}>
-        <TextField floatingLabelText="会員番号" value={this.state.club_number} onChange={this.handleChange.bind(this, "club_number")} />
+        <TextField floatingLabelText="会員番号" value={c.club_number} onChange={this.handleChange.bind(this, "club_number")} />
         <br />
-        <TextField floatingLabelText="氏" value={this.state.last_name} onChange={this.handleChange.bind(this, "last_name")} />
-        <TextField floatingLabelText="名" value={this.state.first_name} onChange={this.handleChange.bind(this, "first_name")} />
+        <TextField floatingLabelText="氏" value={c.last_name} onChange={this.handleChange.bind(this, "last_name")} />
+        <TextField floatingLabelText="名" value={c.first_name} onChange={this.handleChange.bind(this, "first_name")} />
         <br />
-        <TextField floatingLabelText="氏(かな)" value={this.state.last_name_kana} onChange={this.handleChange.bind(this, "last_name_kana")} />
-        <TextField floatingLabelText="名(かな)" value={this.state.first_name_kana} onChange={this.handleChange.bind(this, "first_name_kana")} />
+        <TextField floatingLabelText="氏(かな)" value={c.last_name_kana} onChange={this.handleChange.bind(this, "last_name_kana")} />
+        <TextField floatingLabelText="名(かな)" value={c.first_name_kana} onChange={this.handleChange.bind(this, "first_name_kana")} />
         <br />
-        <RadioButtonGroup onChange={this.handleChange.bind(this, "gender")} defaultSelected={this.state.gender}>
+        <RadioButtonGroup onChange={this.handleChange.bind(this, "gender")} defaultSelected={c.gender} valueSelected={c.gender}>
           <RadioButton label="女性" value="female" />
           <RadioButton label="男性" value="man" />
         </RadioButtonGroup>
         <br />
-        <DatePicker hintText="生年月日" autoOk={true} mode="landscape" value={this.state.birth} onChange={this.handleDateChange.bind(this, "birth")} />
+        <DatePicker floatingLabelText="生年月日"
+                    autoOk={true}
+                    mode="landscape"
+                    value={new Date(c.birth)}
+                    formatDate={(dt) => `${dt.getFullYear()}/${dt.getMonth() + 1}/${dt.getDate()}`}
+                    onChange={this.handleDateChange.bind(this, "birth")} />
         <br />
-        <TextField floatingLabelText="email"   value={this.state.email} onChange={this.handleChange.bind(this, "email")} type="email" />
-        <TextField floatingLabelText="tel"     value={this.state.tel} onChange={this.handleChange.bind(this, "tel")} />
+        <TextField floatingLabelText="email"   value={c.email} onChange={this.handleChange.bind(this, "email")} type="email" />
+        <TextField floatingLabelText="tel"     value={c.tel} onChange={this.handleChange.bind(this, "tel")} />
         <br />
-        <TextField floatingLabelText="住所" value={this.state.address} onChange={this.handleChange.bind(this, "address")} fullWidth={true} />
+        <TextField floatingLabelText="住所" value={c.address} onChange={this.handleChange.bind(this, "address")} fullWidth={true} />
         <br />
-        <TextField floatingLabelText="備考"    value={this.state.note} onChange={this.handleChange.bind(this, "note")} fullWidth={true} />
+        <TextField floatingLabelText="備考"    value={c.note} onChange={this.handleChange.bind(this, "note")} fullWidth={true} />
         <br />
 
         <RaisedButton label="Post" primary={true} onClick={this.handleSubmit.bind(this)} />
@@ -144,9 +160,10 @@ class CustomerForm extends React.Component {
 
 class CustomerList extends React.Component {
   render() {
+    let self = this;
     var nodes = this.props.data.map(function (customer) {
       return (
-        <Customer customer={customer}>
+        <Customer customer={customer} onCustomerClick={self.props.onCustomerClick.bind(this, customer)}>
         </Customer>
       );
     });
@@ -163,7 +180,7 @@ class Customer extends React.Component {
     let c = this.props.customer;
     let text = c.club_number + ": " + c.last_name + c.first_name + "(" + c.last_name_kana + c.first_name_kana + ")"
     return (
-      <ListItem primaryText={text} />
+      <ListItem primaryText={text} onClick={this.props.onCustomerClick.bind(this)} />
     );
   }
 };
