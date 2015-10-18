@@ -11,12 +11,12 @@ let FloatingActionButton = require('material-ui/lib/floating-action-button')
 export default class CustomerBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {data: [], adding: false};
+    this.state = {data: [], adding: false, q: ""};
   }
   loadCommentsFromServer() {
     let url = '/api/v1/customers.json';
     $.ajax({
-      url: url,
+      url: url + "?q=" + this.state.q,
       dataType: 'json',
       success: function(result) {
         this.setState({data: result.data});
@@ -47,6 +47,10 @@ export default class CustomerBox extends React.Component {
   clickAdd(value) {
     this.setState({adding: value})
   }
+  handleQueryChanged(elm) {
+    this.setState({q: elm.target.value});
+    this.loadCommentsFromServer();
+  }
   render() {
     var addButton = "";
     if (!this.state.adding) {
@@ -66,7 +70,12 @@ export default class CustomerBox extends React.Component {
     }
     return (
       <div className="customerBox">
-        <h3>顧客管理 {addButton}</h3>
+        <h3>顧客管理
+          <span style={{margin: "0 35px"}}>
+            <i className="material-icons">search</i>
+            <TextField floatingLabelText="検索" value={this.state.q} onChange={this.handleQueryChanged.bind(this)} />
+          </span>
+          {addButton}</h3>
         <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)} visible={this.state.adding} />
         <CustomerList data={this.state.data} />
       </div>

@@ -5,7 +5,6 @@ const AppBar     = require('material-ui/lib/app-bar');
 const FlatButton = require('material-ui/lib/flat-button');
 
 import CustomerBox from './components/customer.jsx';
-import CustomerSearch from './components/customer_search.jsx';
 
 let injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
@@ -33,7 +32,6 @@ React.render((
   <Router>
     <Route path="/" component={App}>
       <Route path="customers" component={CustomerBox} />
-      <Route path="customers/search" component={CustomerSearch} />
     </Route>
   </Router>
 ), document.getElementById('app'));
