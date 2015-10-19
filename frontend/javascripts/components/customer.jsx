@@ -7,13 +7,15 @@ let RadioButton = require('material-ui/lib/radio-button-group')
 import { DatePicker } from 'material-ui/lib/date-picker' // cannot use let
 let RaisedButton = require('material-ui/lib/raised-button')
 let FloatingActionButton = require('material-ui/lib/floating-action-button')
+let FlatButton = require('material-ui/lib/flat-button')
 let {GridList} = require('material-ui/lib/grid-list')
 import Snackbar from 'material-ui/lib/snackbar'
+import {Card, CardHeader, CardTitle, CardText, CardActions} from 'material-ui/lib/card'
 
 export default class CustomerBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {data: [], adding: false, q: "", snack_message: "",
+    this.state = {data: [], state: "", q: "", snack_message: "",
       edit_customer: {
         club_number: "",
         first_name: "",
@@ -65,15 +67,21 @@ export default class CustomerBox extends React.Component {
   componentDidMount() {
     this.loadCommentsFromServer();
   }
-  clickAdd(value) {
-    this.setState({adding: value})
+  clickAdd() {
+    this.setState({state: "newCustomer", edit_customer: {}})
+  }
+  clickClose() {
+    this.setState({state: ""})
   }
   handleQueryChanged(elm) {
     this.setState({q: elm.target.value});
     this.loadCommentsFromServer();
   }
   onCustomerClick(customer) {
-    this.setState({adding: true, edit_customer: customer});
+    this.setState({state: "showCustomer", edit_customer: customer});
+  }
+  onCustomerEditClick(customer) {
+    this.setState({state: "editCustomer", edit_customer: customer});
   }
   handleCustomerChange(elm, value) {
     var newState = this.state.edit_customer;
@@ -81,11 +89,11 @@ export default class CustomerBox extends React.Component {
     this.setState({edit_customer: newState});
   }
   addButton() {
-    if (!this.state.adding) {
+    if (this.state.state == "") {
       return (
         <FloatingActionButton
           style={{float: "right"}}
-          onClick={this.clickAdd.bind(this, true)}>
+          onClick={this.clickAdd.bind(this)}>
           <i className="material-icons">add</i>
         </FloatingActionButton>
       )
@@ -93,9 +101,26 @@ export default class CustomerBox extends React.Component {
       return (
         <FloatingActionButton
           style={{float: "right"}}
-          onClick={this.clickAdd.bind(this, false)} secondary={true}>
+          onClick={this.clickClose.bind(this)} secondary={true}>
           <i className="material-icons">close</i>
         </FloatingActionButton>
+      )
+    }
+  }
+  rightContent() {
+    if (this.state.state == "showCustomer") {
+      return (
+        <CustomerCard customer={this.state.edit_customer}
+                      onCustomerEditClick={this.onCustomerEditClick.bind(this, this.state.edit_customer)} />
+      )
+    } else if (this.state.state == "editCustomer" || this.state.state == "newCustomer") {
+      return (
+        <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)}
+                    edit_customer={this.state.edit_customer}
+                    handleCustomerChange={this.handleCustomerChange.bind(this)} />
+      )
+    } else {
+      return (<span />)
     }
   }
   render() {
@@ -109,10 +134,7 @@ export default class CustomerBox extends React.Component {
           {this.addButton()}</h3>
         <GridList cols="2">
           <CustomerList data={this.state.data} onCustomerClick={this.onCustomerClick.bind(this)} />
-          <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)}
-                        edit_customer={this.state.edit_customer}
-                        handleCustomerChange={this.handleCustomerChange.bind(this)}
-                        visible={this.state.adding} />
+          {this.rightContent()}
         </GridList>
         <Snackbar ref="snackbar" message={this.state.snack_message} />
       </div>
@@ -142,7 +164,7 @@ class CustomerForm extends React.Component {
       birth = new Date(c.birth)
     }
     return (
-      <form onSubmit={this.handleSubmit.bind(this)} style={this.props.visible ?  {} : {display: "none"}}>
+      <form onSubmit={this.handleSubmit.bind(this)}>
         <TextField floatingLabelText="会員番号" value={c.club_number} onChange={this.handleChange.bind(this, "club_number")} />
         <br />
         <TextField floatingLabelText="氏" value={c.last_name} onChange={this.handleChange.bind(this, "last_name")} />
@@ -177,13 +199,54 @@ class CustomerForm extends React.Component {
   }
 };
 
+class CustomerCard extends React.Component {
+  gender_text(g) {
+    if (g == "female") {
+      return '女性'
+    } else if (g == "man") {
+      return '男性'
+    } else {
+      return "不明"
+    }
+  }
+  render() {
+    let c = this.props.customer
+    let name = c.last_name + " " + c.first_name
+    let name_kana = c.last_name_kana + " " + c.first_name_kana
+    return (
+      <Card>
+        <CardHeader title={name} subtitle={name_kana} />
+        <CardActions>
+          <FlatButton label="Edit" secondary={true} onClick={this.props.onCustomerEditClick.bind(this)} />
+        </CardActions>
+        <CardText>
+          {c.club_number}
+          <GridList cols="2">
+            <span>{c.age}歳</span>
+            <span>{this.gender_text(c.gender)}</span>
+            <span>{c.email}</span>
+            <span>{c.tel}</span>
+          </GridList>
+          <GridList cols="1">
+            <span>{c.address}</span>
+          </GridList>
+        </CardText>
+        <CardText>
+          {c.note}
+        </CardText>
+      </Card>
+    )
+  }
+}
+
 class CustomerList extends React.Component {
   render() {
     let self = this;
     var nodes = this.props.data.map(function (customer) {
       return (
-        <Customer customer={customer} onCustomerClick={self.props.onCustomerClick.bind(this, customer)}>
-        </Customer>
+        <CustomerListItem customer={customer}
+                          onCustomerClick={self.props.onCustomerClick.bind(this, customer)}>
+        </CustomerListItem>
       );
     });
     return (
@@ -194,7 +257,7 @@ class CustomerList extends React.Component {
   }
 };
 
-class Customer extends React.Component {
+class CustomerListItem extends React.Component {
   render() {
     let c = this.props.customer;
     let text = c.club_number + ": " + c.last_name + c.first_name + "(" + c.last_name_kana + c.first_name_kana + ")"
