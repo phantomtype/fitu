@@ -80,23 +80,25 @@ export default class CustomerBox extends React.Component {
     newState[elm] = value;
     this.setState({edit_customer: newState});
   }
-  render() {
-    var addButton = "";
+  addButton() {
     if (!this.state.adding) {
-      addButton =
+      return (
         <FloatingActionButton
           style={{float: "right"}}
           onClick={this.clickAdd.bind(this, true)}>
           <i className="material-icons">add</i>
         </FloatingActionButton>
+      )
     } else {
-      addButton =
+      return (
         <FloatingActionButton
           style={{float: "right"}}
           onClick={this.clickAdd.bind(this, false)} secondary={true}>
           <i className="material-icons">close</i>
         </FloatingActionButton>
     }
+  }
+  render() {
     return (
       <div className="customerBox">
         <h3>顧客管理
@@ -104,7 +106,7 @@ export default class CustomerBox extends React.Component {
             <i className="material-icons">search</i>
             <TextField floatingLabelText="検索" value={this.state.q} onChange={this.handleQueryChanged.bind(this)} />
           </span>
-          {addButton}</h3>
+          {this.addButton()}</h3>
         <GridList cols="2">
           <CustomerList data={this.state.data} onCustomerClick={this.onCustomerClick.bind(this)} />
           <CustomerForm onCustomerSubmit={this.handleCustomerSubmit.bind(this)}
