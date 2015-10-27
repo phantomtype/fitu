@@ -15,7 +15,7 @@ import {Card, CardHeader, CardTitle, CardText, CardActions} from 'material-ui/li
 export default class CustomerBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {data: [], state: "", q: "", snack_message: "",
+    this.state = {data: [], state: "", q: "", snack_message: "", aiueo: true,
       edit_customer: {
         club_number: "",
         first_name: "",
@@ -24,10 +24,10 @@ export default class CustomerBox extends React.Component {
         last_name_kana: "",
       }};
   }
-  loadCommentsFromServer() {
+  loadCommentsFromServer(kana) {
     let url = '/api/v1/customers.json';
     $.ajax({
-      url: url + "?q=" + this.state.q,
+      url: url + "?q=" + kana,
       dataType: 'json',
       success: function(result) {
         this.setState({data: result.data});
@@ -65,7 +65,7 @@ export default class CustomerBox extends React.Component {
     });
   }
   componentDidMount() {
-    this.loadCommentsFromServer();
+    //this.loadCommentsFromServer();
   }
   clickAdd() {
     this.setState({state: "newCustomer", edit_customer: {}})
@@ -74,14 +74,21 @@ export default class CustomerBox extends React.Component {
     this.setState({state: ""})
   }
   handleQueryChanged(elm) {
-    this.setState({q: elm.target.value});
-    this.loadCommentsFromServer();
+    this.setState({q: elm.target.value, aiueo: false});
+    this.loadCommentsFromServer(elm.target.value);
   }
   onCustomerClick(customer) {
     this.setState({state: "showCustomer", edit_customer: customer});
   }
   onCustomerEditClick(customer) {
     this.setState({state: "editCustomer", edit_customer: customer});
+  }
+  onKanaClick(kana) {
+    this.setState({aiueo: false, q: kana});
+    this.loadCommentsFromServer(kana);
+  }
+  onBackToKana() {
+    this.setState({aiueo: true, q: ""});
   }
   handleCustomerChange(elm, value) {
     var newState = this.state.edit_customer;
@@ -123,6 +130,22 @@ export default class CustomerBox extends React.Component {
       return (<span />)
     }
   }
+
+  leftContent() {
+    if (this.state.aiueo) {
+      return (
+        <Aiueo onKanaClick={this.onKanaClick.bind(this)} />
+      )
+    } else {
+      return (
+        <div>
+          <FlatButton label="Back" secondary={true} onClick={this.onBackToKana.bind(this)} />
+          <CustomerList data={this.state.data} onCustomerClick={this.onCustomerClick.bind(this)} />
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="customerBox">
@@ -133,7 +156,7 @@ export default class CustomerBox extends React.Component {
           </span>
           {this.addButton()}</h3>
         <GridList cols="2">
-          <CustomerList data={this.state.data} onCustomerClick={this.onCustomerClick.bind(this)} />
+          {this.leftContent()}
           {this.rightContent()}
         </GridList>
         <Snackbar ref="snackbar" message={this.state.snack_message} />
@@ -239,10 +262,40 @@ class CustomerCard extends React.Component {
   }
 }
 
+class Aiueo extends React.Component {
+  render() {
+    let self = this;
+    let aiueo = [
+      "あいうえお",
+      "かきくけこ",
+      "さしすせそ",
+      "たちつてと",
+      "なにぬねの",
+      "はひふへほ",
+      "まみむめも",
+      "やゆよ",
+      "わを",
+    ].map(function (a) {
+        return (
+          a.split('').map(function (b) {
+            return (
+              <FlatButton label={b} onClick={self.props.onKanaClick.bind(this, b)} />
+            )
+          })
+        );
+      });
+    return (
+      <GridList cols="5">
+        {aiueo}
+      </GridList>
+    );
+  }
+}
+
 class CustomerList extends React.Component {
   render() {
     let self = this;
-    var nodes = this.props.data.map(function (customer) {
+    let nodes = this.props.data.map(function (customer) {
       return (
         <CustomerListItem customer={customer}
                           onCustomerClick={self.props.onCustomerClick.bind(this, customer)}>
