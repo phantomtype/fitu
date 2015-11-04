@@ -38,7 +38,7 @@ buildScript = (files, watch, dist) ->
     props.debug = true
 
   bundler = (if watch then watchify(browserify(props)) else browserify(props))
-  bundler.transform 'babelify'
+  bundler.transform("babelify", {presets: ["es2015", "react"]})
   bundler.on "update", ->
     rebundle()
     gutil.log "Rebundled..."
