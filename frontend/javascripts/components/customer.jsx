@@ -155,7 +155,7 @@ export default class CustomerBox extends React.Component {
             <TextField floatingLabelText="検索" value={this.state.q} onChange={this.handleQueryChanged.bind(this)} />
           </span>
           {this.addButton()}</h3>
-        <GridList cols="2">
+        <GridList cols={2}>
           {this.leftContent()}
           {this.rightContent()}
         </GridList>
@@ -244,13 +244,13 @@ class CustomerCard extends React.Component {
         </CardActions>
         <CardText>
           {c.club_number}
-          <GridList cols="2">
+          <GridList cols={2}>
             <span>{c.age}歳</span>
             <span>{this.gender_text(c.gender)}</span>
             <span>{c.email}</span>
             <span>{c.tel}</span>
           </GridList>
-          <GridList cols="1">
+          <GridList cols={1}>
             <span>{c.address}</span>
           </GridList>
         </CardText>
@@ -285,7 +285,7 @@ class Aiueo extends React.Component {
         );
       });
     return (
-      <GridList cols="5">
+      <GridList cols={5} cellHeight={80}>
         {aiueo}
       </GridList>
     );
