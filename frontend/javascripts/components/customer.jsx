@@ -114,6 +114,7 @@ export default class CustomerBox extends React.Component {
       )
     }
   }
+
   rightContent() {
     if (this.state.state == "showCustomer") {
       return (
@@ -131,17 +132,22 @@ export default class CustomerBox extends React.Component {
     }
   }
 
-  leftContent() {
+  content() {
     if (this.state.aiueo) {
       return (
-        <Aiueo onKanaClick={this.onKanaClick.bind(this)} />
+        <GridList cols={1}>
+          <Aiueo onKanaClick={this.onKanaClick.bind(this)} />
+        </GridList>
       )
     } else {
       return (
-        <div>
-          <FlatButton label="Back" secondary={true} onClick={this.onBackToKana.bind(this)} />
-          <CustomerList data={this.state.data} onCustomerClick={this.onCustomerClick.bind(this)} />
-        </div>
+        <GridList cols={2}>
+          <div>
+            <FlatButton label="Back" secondary={true} onClick={this.onBackToKana.bind(this)} />
+            <CustomerList data={this.state.data} onCustomerClick={this.onCustomerClick.bind(this)} />
+          </div>
+          {this.rightContent()}
+        </GridList>
       )
     }
   }
@@ -155,10 +161,7 @@ export default class CustomerBox extends React.Component {
             <TextField floatingLabelText="検索" value={this.state.q} onChange={this.handleQueryChanged.bind(this)} />
           </span>
           {this.addButton()}</h3>
-        <GridList cols={2}>
-          {this.leftContent()}
-          {this.rightContent()}
-        </GridList>
+        {this.content()}
         <Snackbar ref="snackbar" message={this.state.snack_message} />
       </div>
     );
