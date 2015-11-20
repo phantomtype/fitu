@@ -68,7 +68,7 @@ export default class CustomerBox extends React.Component {
     //this.loadCommentsFromServer();
   }
   clickAdd() {
-    this.setState({state: "newCustomer", edit_customer: {}})
+    this.setState({state: "newCustomer", edit_customer: {}, aiueo: false})
   }
   clickClose() {
     this.setState({state: ""})
