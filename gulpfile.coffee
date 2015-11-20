@@ -57,30 +57,3 @@ gulp.task "watch", ["default"], ->
 gulp.task 'dist', ->
   buildScript paths.srcFiles, false, true
 
-gulp.task 'bower', ->
-  jsFilter = filter '**/*.js'
-  gulp
-    .src bower()
-    .pipe jsFilter
-    .pipe concat 'lib.js'
-    .pipe gulp.dest 'public'
-
-gulp.task 'bowerc', ->
-  cssFilter = filter '**/*.css'
-#  scssFilter = filter '**/*.scss'
-#  sassFilter = filter '**/*.sass'
-  gulp
-    .src bower()
-    .pipe cssFilter
-#    .pipe rename
-#      prefix: '_'
-#      extname: '.scss'
-    .pipe gulp.dest 'public/'
-#    .pipe cssFilter.restore()
-#    .pipe scssFilter
-#    .pipe gulp.dest 'public/'
-#    .pipe cssFilter.restore()
-#    .pipe sassFilter
-#    .pipe gulp.dest 'public/'
-#    .pipe cssFilter.restore()
-
