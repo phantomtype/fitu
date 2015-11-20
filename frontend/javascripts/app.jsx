@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Router, Route, Link } from 'react-router';
 
 const AppBar     = require('material-ui/lib/app-bar');
@@ -28,7 +29,7 @@ class App extends React.Component {
   }
 };
 
-React.render((
+ReactDOM.render((
   <Router>
     <Route path="/" component={App}>
       <Route path="customers" component={CustomerBox} />
